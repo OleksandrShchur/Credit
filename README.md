@@ -10,7 +10,7 @@
   <a href="#key-features">Головні функції</a> •
   <a href="#how-to-use">Як користуватися</a> •
   <a href="#how-to-use-dev">Як користуватися(для розробників)</a> •
-  <a href="about-us">Про нас</a>
+  <a href="#about-us">Про нас</a> •
   <a href="#useful-links">Корисні посилання</a>
 </p>
 
