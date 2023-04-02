@@ -14,7 +14,7 @@ export class CreditInputsComponent {
   dataSource = new MatTableDataSource<User>();
   valid: any = {};
   lastId: number = 0;
-  creditLimit: Number = (Math.floor(Math.random() * 100) * 1000) % 100000;
+  creditLimit: Number = 18500; //(Math.floor(Math.random() * 100) * 1000) % 100000;
 
   constructor(public dialog: MatDialog) {}
 
@@ -84,4 +84,6 @@ export class CreditInputsComponent {
       isSelected: event.checked,
     }));
   }
+
+  prepareData() {}
 }
