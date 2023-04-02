@@ -7,6 +7,7 @@ export interface User {
   birthDate: string;
   sumOfCredit: number;
   isEdit: boolean;
+  risk: number;
 }
 
 export const UserColumns = [
@@ -41,8 +42,13 @@ export const UserColumns = [
   },
   {
     key: 'sumOfCredit',
-    type: 'number',
+    type: 'currency',
     label: 'Сума кредиту',
+  },
+  {
+    key: 'risk',
+    type: 'number',
+    label: 'Імовірність неповернення, %',
   },
   {
     key: 'isEdit',

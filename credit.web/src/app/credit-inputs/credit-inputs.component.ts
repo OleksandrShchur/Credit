@@ -36,6 +36,7 @@ export class CreditInputsComponent {
       isEdit: true,
       isSelected: false,
       sumOfCredit: 0,
+      risk: 0,
     };
     this.dataSource.data = [newRow, ...this.dataSource.data];
   }
