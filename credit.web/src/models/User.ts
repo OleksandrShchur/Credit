@@ -51,6 +51,11 @@ export const UserColumns = [
     label: 'Імовірність неповернення, %',
   },
   {
+    key: 'countOfPayments',
+    type: 'number',
+    label: 'Кількість виплат',
+  },
+  {
     key: 'isEdit',
     type: 'isEdit',
     label: '',
