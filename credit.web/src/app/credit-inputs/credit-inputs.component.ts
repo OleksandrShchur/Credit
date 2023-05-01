@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { User, UserColumns } from 'src/models/User';
+
+import { PrepareModel } from 'src/models/prepareModel';
+import { User, UserColumns } from 'src/models/user';
+import { CreditService } from 'src/services/credit.service';
 
 @Component({
   selector: 'app-credit-inputs',
@@ -14,9 +17,9 @@ export class CreditInputsComponent {
   dataSource = new MatTableDataSource<User>();
   valid: any = {};
   lastId: number = 0;
-  creditLimit: Number = 18500; //(Math.floor(Math.random() * 100) * 1000) % 100000;
+  creditLimit: number = 18500; //(Math.floor(Math.random() * 100) * 1000) % 100000;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private creditService: CreditService) {}
 
   ngOnInit() {}
 
@@ -85,5 +88,22 @@ export class CreditInputsComponent {
     }));
   }
 
-  prepareData() {}
+  prepareData() {
+    const prepareData: PrepareModel = {
+      expectedPayment: [500, 1000, 2500, 5000, 10000],
+      income: [27, -53, -242, -593, -1402],
+      budget: this.creditLimit,
+    };
+
+    this.creditService.calculateModel(prepareData).subscribe(
+      (response) => {
+        console.log(response);
+        alert('Processing model successful.');
+      },
+      (error) => {
+        alert('Processing model finished with error.');
+        console.log(error);
+      }
+    );
+  }
 }

@@ -103,7 +103,12 @@
 
 <section>
   <div>
-    <button mat-raised-button color="primary" class="calculate-button">
+    <button
+      mat-raised-button
+      color="primary"
+      class="calculate-button"
+      (click)="prepareData()"
+    >
       Обчислити модель кредитування
     </button>
   </div>
