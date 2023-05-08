@@ -7,6 +7,7 @@ export interface User {
   birthDate: string;
   sumOfCredit: number;
   isEdit: boolean;
+  countOfPayments: number;
   risk: number;
 }
 

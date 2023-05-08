@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { CreditData } from 'src/models/creditData';
 
 import { PrepareModel } from 'src/models/prepareModel';
 import { User, UserColumns } from 'src/models/user';
@@ -18,6 +19,7 @@ export class CreditInputsComponent {
   valid: any = {};
   lastId: number = 0;
   creditLimit: number = 18500; //(Math.floor(Math.random() * 100) * 1000) % 100000;
+  interestRate: number = 36;
 
   constructor(public dialog: MatDialog, private creditService: CreditService) {}
 
@@ -39,6 +41,7 @@ export class CreditInputsComponent {
       isEdit: true,
       isSelected: false,
       sumOfCredit: 0,
+      countOfPayments: 0,
       risk: 0,
     };
     this.dataSource.data = [newRow, ...this.dataSource.data];
@@ -89,9 +92,38 @@ export class CreditInputsComponent {
   }
 
   prepareData() {
+    let creditData: CreditData[] = [];
+
+    this.dataSource.data.forEach((el) => {
+      creditData.push({
+        sumOfCredit: el.sumOfCredit,
+        countOfPayments: el.countOfPayments,
+        risk: el.risk,
+        mounthlyPayment: 0,
+        income: 0,
+      });
+    });
+
+    const percentRate: number = 1 / this.interestRate;
+
+    creditData.forEach((el) => {
+      el.mounthlyPayment =
+        (el.sumOfCredit *
+          (percentRate * Math.pow(1 + percentRate, el.countOfPayments))) /
+        (Math.pow(1 + percentRate, el.countOfPayments) - 1);
+
+      let pureIncome = el.countOfPayments * el.mounthlyPayment - el.sumOfCredit;
+
+      const riskPercentage = el.risk / 100;
+      el.income =
+        pureIncome * (1 - riskPercentage) - 2 * el.sumOfCredit * riskPercentage;
+    });
+
+    console.log(creditData);
+
     const prepareData: PrepareModel = {
-      expectedPayment: [500, 1000, 2500, 5000, 10000],
-      income: [27, -53, -242, -593, -1402],
+      expectedPayment: creditData.map((x) => Number(x.sumOfCredit)),
+      income: creditData.map((x) => -x.income),
       budget: this.creditLimit,
     };
 
