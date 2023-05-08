@@ -38,6 +38,9 @@
           ></mat-checkbox>
         </ng-container>
         <div class="btn-edit" *ngSwitchCase="'isEdit'">
+          <button mat-button (click)="openDialog(element)">
+            Payments Data
+          </button>
           <button mat-button (click)="element.isEdit = !element.isEdit">
             Edit
           </button>

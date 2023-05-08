@@ -6,6 +6,8 @@ import { CreditData } from 'src/models/creditData';
 import { PrepareModel } from 'src/models/prepareModel';
 import { User, UserColumns } from 'src/models/user';
 import { CreditService } from 'src/services/credit.service';
+import { PopulateCreditDialogComponent } from '../populate-credit-dialog/populate-credit-dialog.component';
+import { PaymentCreditData } from 'src/models/PaymentCreditData';
 
 @Component({
   selector: 'app-credit-inputs',
@@ -43,6 +45,7 @@ export class CreditInputsComponent {
       sumOfCredit: 0,
       countOfPayments: 0,
       risk: 0,
+      paymentsByMonths: [],
     };
     this.dataSource.data = [newRow, ...this.dataSource.data];
   }
@@ -89,6 +92,26 @@ export class CreditInputsComponent {
       ...item,
       isSelected: event.checked,
     }));
+  }
+
+  openDialog(selectedRow: User): void {
+    const dialogRef = this.dialog.open(PopulateCreditDialogComponent, {
+      data: {
+        sumOfCredit: selectedRow.sumOfCredit,
+        countOfPayments: selectedRow.countOfPayments,
+        id: selectedRow.id,
+        payments: selectedRow.paymentsByMonths,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+      console.log(result);
+      this.dataSource.data.find((x) => x.id === result.id)!.paymentsByMonths =
+        result.payments;
+
+      console.log(this.dataSource);
+    });
   }
 
   prepareData() {

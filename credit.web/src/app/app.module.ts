@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -22,9 +22,15 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { CreditInputsComponent } from './credit-inputs/credit-inputs.component';
 import { CreditService } from 'src/services/credit.service';
 import { BaseService } from 'src/services/base.service';
+import { PopulateCreditDialogComponent } from './populate-credit-dialog/populate-credit-dialog.component';
 
 @NgModule({
-  declarations: [AppComponent, NavBarComponent, CreditInputsComponent],
+  declarations: [
+    AppComponent,
+    NavBarComponent,
+    CreditInputsComponent,
+    PopulateCreditDialogComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -43,6 +49,7 @@ import { BaseService } from 'src/services/base.service';
     MatCheckboxModule,
     MatNativeDateModule,
     HttpClientModule,
+    ReactiveFormsModule,
   ],
   providers: [HttpClient, BaseService, CreditService],
   bootstrap: [AppComponent],

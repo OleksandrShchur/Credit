@@ -9,6 +9,7 @@ export interface User {
   isEdit: boolean;
   countOfPayments: number;
   risk: number;
+  paymentsByMonths: Array<number>;
 }
 
 export const UserColumns = [
