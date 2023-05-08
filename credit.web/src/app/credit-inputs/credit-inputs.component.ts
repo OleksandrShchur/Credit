@@ -157,19 +157,6 @@ export class CreditInputsComponent {
       );
     });
 
-    // creditData.forEach((el) => {
-    //   el.mounthlyPayment =
-    //     (el.sumOfCredit *
-    //       (percentRate * Math.pow(1 + percentRate, el.countOfPayments))) /
-    //     (Math.pow(1 + percentRate, el.countOfPayments) - 1);
-
-    //   let pureIncome = el.countOfPayments * el.mounthlyPayment - el.sumOfCredit;
-
-    //   const riskPercentage = el.risk / 100;
-    //   el.income =
-    //     pureIncome * (1 - riskPercentage) - 2 * el.sumOfCredit * riskPercentage;
-    // });
-
     console.log(creditData);
 
     const prepareData: PrepareModel = {
