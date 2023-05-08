@@ -137,25 +137,38 @@ export class CreditInputsComponent {
         sumOfCredit: el.sumOfCredit,
         countOfPayments: el.countOfPayments,
         risk: el.risk,
-        mounthlyPayment: 0,
+        mounthlyPayment: [...el.paymentsByMonths],
         income: 0,
       });
     });
 
-    const percentRate: number = 1 / this.interestRate;
-
     creditData.forEach((el) => {
-      el.mounthlyPayment =
-        (el.sumOfCredit *
-          (percentRate * Math.pow(1 + percentRate, el.countOfPayments))) /
-        (Math.pow(1 + percentRate, el.countOfPayments) - 1);
+      el.mounthlyPayment[el.mounthlyPayment.length - 1] = Number(
+        this.calculateLastMonthPayment(
+          el.sumOfCredit,
+          el.mounthlyPayment
+        ).toFixed(2)
+      );
 
-      let pureIncome = el.countOfPayments * el.mounthlyPayment - el.sumOfCredit;
-
-      const riskPercentage = el.risk / 100;
-      el.income =
-        pureIncome * (1 - riskPercentage) - 2 * el.sumOfCredit * riskPercentage;
+      el.income = this.calculateIncome(
+        el.sumOfCredit,
+        el.mounthlyPayment,
+        el.risk
+      );
     });
+
+    // creditData.forEach((el) => {
+    //   el.mounthlyPayment =
+    //     (el.sumOfCredit *
+    //       (percentRate * Math.pow(1 + percentRate, el.countOfPayments))) /
+    //     (Math.pow(1 + percentRate, el.countOfPayments) - 1);
+
+    //   let pureIncome = el.countOfPayments * el.mounthlyPayment - el.sumOfCredit;
+
+    //   const riskPercentage = el.risk / 100;
+    //   el.income =
+    //     pureIncome * (1 - riskPercentage) - 2 * el.sumOfCredit * riskPercentage;
+    // });
 
     console.log(creditData);
 
@@ -166,5 +179,45 @@ export class CreditInputsComponent {
     };
 
     return prepareData;
+  }
+
+  calculateLastMonthPayment(
+    sumOfCredit: number,
+    payments: Array<number>
+  ): number {
+    let daysCount = 30;
+    let current = Number(sumOfCredit) * Math.pow(1 + 0.001, daysCount);
+
+    for (let i = 1; i < payments.length - 1; i++) {
+      daysCount += 30;
+
+      current =
+        (Number(current) - Number(payments[i])) *
+        Math.pow(1 + 0.001, daysCount);
+    }
+
+    return current;
+  }
+
+  calculateIncome(
+    sumOfCredit: number,
+    payments: Array<number>,
+    risk: number
+  ): number {
+    let daysCount = 30;
+    let income = -Number(sumOfCredit);
+    const riskPercentage: Number = Number(risk) / 100;
+
+    for (let i = 0; i < payments.length; i++) {
+      income += payments[i] / Math.pow(1.001, daysCount);
+
+      daysCount += 30;
+    }
+
+    let incomeWithRisk =
+      Number(income) * (1 - Number(riskPercentage)) -
+      2 * Number(sumOfCredit) * Number(riskPercentage);
+
+    return incomeWithRisk;
   }
 }

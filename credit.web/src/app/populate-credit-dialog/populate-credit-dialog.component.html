@@ -1,8 +1,9 @@
 <h1 mat-dialog-title>Populate the inputs with one time payment sums</h1>
+<h2>Credit: {{ data.sumOfCredit }}</h2>
 <form (ngSubmit)="onSubmit()">
   <mat-form-field class="full-width" *ngFor="let d of inputsNumber">
     <mat-label>{{ d }} payment</mat-label>
-    <input matInput [(ngModel)]="paymentsData[d - 1]" name="{{d}}" />
+    <input matInput [(ngModel)]="paymentsData[d - 1]" name="{{ d }}" />
   </mat-form-field>
 </form>
 <div mat-dialog-actions>
