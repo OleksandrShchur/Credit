@@ -115,6 +115,21 @@ export class CreditInputsComponent {
   }
 
   prepareData() {
+    const processData = this.processDataTable();
+
+    this.creditService.calculateModel(processData).subscribe(
+      (response) => {
+        console.log(response);
+        alert('Processing model successful.');
+      },
+      (error) => {
+        alert('Processing model finished with error.');
+        console.log(error);
+      }
+    );
+  }
+
+  processDataTable(): PrepareModel {
     let creditData: CreditData[] = [];
 
     this.dataSource.data.forEach((el) => {
@@ -150,15 +165,6 @@ export class CreditInputsComponent {
       budget: this.creditLimit,
     };
 
-    this.creditService.calculateModel(prepareData).subscribe(
-      (response) => {
-        console.log(response);
-        alert('Processing model successful.');
-      },
-      (error) => {
-        alert('Processing model finished with error.');
-        console.log(error);
-      }
-    );
+    return prepareData;
   }
 }
