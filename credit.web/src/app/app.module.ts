@@ -18,12 +18,22 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { CreditInputsComponent } from './credit-inputs/credit-inputs.component';
+import { LoginComponent } from './login/login.component';
+// import { RegistrationComponent } from './app-registration/app-registration.component';
 
 @NgModule({
-  declarations: [AppComponent, NavBarComponent, CreditInputsComponent],
+  declarations: [
+    AppComponent,
+    NavBarComponent,
+    CreditInputsComponent,
+    LoginComponent,
+    // RegistrationComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -41,6 +51,8 @@ import { CreditInputsComponent } from './credit-inputs/credit-inputs.component';
     FormsModule,
     MatCheckboxModule,
     MatNativeDateModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
