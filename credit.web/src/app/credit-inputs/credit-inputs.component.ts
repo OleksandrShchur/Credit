@@ -105,10 +105,19 @@ export class CreditInputsComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
       console.log(result);
-      this.dataSource.data.find((x) => x.id === result.id)!.paymentsByMonths =
-        result.payments;
+
+      if (result !== undefined) {
+        this.dataSource.data.find((x) => x.id === result.id)!.paymentsByMonths =
+          result.payments;
+
+        this.dataSource.data.find((x) => x.id === result.id)!.paymentsByMonths[
+          selectedRow.paymentsByMonths.length - 1
+        ] = this.calculateLastMonthPayment(
+          selectedRow.sumOfCredit,
+          this.dataSource.data.find((x) => x.id === result.id)!.paymentsByMonths
+        );
+      }
 
       console.log(this.dataSource);
     });
@@ -183,7 +192,7 @@ export class CreditInputsComponent {
         Math.pow(1 + 0.001, daysCount);
     }
 
-    return current;
+    return Number(current.toFixed(2));
   }
 
   calculateIncome(

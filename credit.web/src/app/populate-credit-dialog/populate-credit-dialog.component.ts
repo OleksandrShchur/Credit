@@ -10,6 +10,7 @@ import { PaymentCreditData } from 'src/models/PaymentCreditData';
 export class PopulateCreditDialogComponent {
   public paymentsData: Array<number> = [];
   inputsNumber: number[] = [];
+  lastPayment: Number = 0;
 
   constructor(
     public dialogRef: MatDialogRef<PopulateCreditDialogComponent>,
@@ -27,6 +28,8 @@ export class PopulateCreditDialogComponent {
     } else {
       this.paymentsData = data.payments;
     }
+
+    this.lastPayment = this.paymentsData[this.paymentsData.length - 1];
   }
 
   onSubmit(): void {
