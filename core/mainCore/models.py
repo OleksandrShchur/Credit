@@ -33,3 +33,45 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class Borrowing(models.Model):
+    id = models.AutoField(primary_key=True, null=False)
+    credit_name = models.CharField(max_length=300)
+    interest_rate = models.FloatField()
+    term = models.CharField(max_length=500)
+
+
+class CreditRequest(models.Model):
+    id = models.AutoField(primary_key=True, null=False)
+    borrower_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    borrowing_id = models.ForeignKey(Borrowing, on_delete=models.CASCADE)
+    date_of_taking = models.DateTimeField()
+    end_date = models.DateTimeField()
+    credit_amount = models.FloatField()
+
+
+class CreditTaking(models.Model):
+    id = models.AutoField(primary_key=True, null=False)
+    request_id = models.ForeignKey(CreditRequest, on_delete=models.CASCADE)
+    confirmation_date = models.DateTimeField()
+
+
+class JsonReimbursementScheme(models.Model):
+    id = models.AutoField(primary_key=True, null=False)
+    scheme = models.TextField()
+    date = models.DateTimeField()
+    borrower_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+class ReturnScheme(models.Model):
+    id = models.AutoField(primary_key=True, null=False)
+    borrower_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    borrowing_id = models.ForeignKey(Borrowing, on_delete=models.CASCADE)
+
+
+class Return(models.Model):
+    id = models.AutoField(primary_key=True, null=False)
+    scheme_id = models.ForeignKey(ReturnScheme, on_delete=models.CASCADE)
+    date = models.DateTimeField()
+    return_value = models.FloatField()
