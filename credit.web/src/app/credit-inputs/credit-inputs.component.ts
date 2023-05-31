@@ -39,7 +39,6 @@ export class CreditInputsComponent {
       firstName: '',
       lastName: '',
       email: '',
-      birthDate: '',
       isEdit: true,
       isSelected: false,
       sumOfCredit: 0,

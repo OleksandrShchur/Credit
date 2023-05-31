@@ -4,12 +4,12 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  birthDate: string;
   sumOfCredit: number;
   isEdit: boolean;
   countOfPayments: number;
   risk: number;
   paymentsByMonths: Array<number>;
+  allowedPayment?: Number;
 }
 
 export const UserColumns = [
@@ -38,11 +38,6 @@ export const UserColumns = [
     pattern: '.+@.+',
   },
   {
-    key: 'birthDate',
-    type: 'date',
-    label: 'Дата народження',
-  },
-  {
     key: 'sumOfCredit',
     type: 'currency',
     label: 'Сума кредиту',
@@ -56,6 +51,11 @@ export const UserColumns = [
     key: 'countOfPayments',
     type: 'number',
     label: 'Кількість виплат',
+  },
+  {
+    key: 'allowedPayment',
+    type: 'allowedPayment',
+    label: 'Можлива сума виплати',
   },
   {
     key: 'isEdit',
