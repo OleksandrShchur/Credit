@@ -15,6 +15,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +24,9 @@ import { CreditInputsComponent } from './credit-inputs/credit-inputs.component';
 import { CreditService } from 'src/services/credit.service';
 import { BaseService } from 'src/services/base.service';
 import { PopulateCreditDialogComponent } from './populate-credit-dialog/populate-credit-dialog.component';
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './customer-account/login.component';
+import { RegisterComponent } from './customer-account/register.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +34,9 @@ import { PopulateCreditDialogComponent } from './populate-credit-dialog/populate
     NavBarComponent,
     CreditInputsComponent,
     PopulateCreditDialogComponent,
+    HomeComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,7 +57,9 @@ import { PopulateCreditDialogComponent } from './populate-credit-dialog/populate
     MatNativeDateModule,
     HttpClientModule,
     ReactiveFormsModule,
+    MatFormFieldModule,
   ],
+  exports: [MatFormFieldModule, MatInputModule],
   providers: [HttpClient, BaseService, CreditService],
   bootstrap: [AppComponent],
 })
