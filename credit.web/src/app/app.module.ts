@@ -16,6 +16,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +29,7 @@ import { PopulateCreditDialogComponent } from './populate-credit-dialog/populate
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './customer-account/login.component';
 import { RegisterComponent } from './customer-account/register.component';
+import { UserCabinetComponent } from './user-cabinet/user-cabinet.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,7 @@ import { RegisterComponent } from './customer-account/register.component';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
+    UserCabinetComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,6 +62,8 @@ import { RegisterComponent } from './customer-account/register.component';
     HttpClientModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatTabsModule,
+    MatExpansionModule,
   ],
   exports: [MatFormFieldModule, MatInputModule],
   providers: [HttpClient, BaseService, CreditService],

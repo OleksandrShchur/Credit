@@ -1,0 +1,98 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Особистий кабінет</span>
+    <span class="spacer"></span>
+    <button mat-button color="basic" (click)="logout()">Вийти</button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="center">
+  <h3>Test User</h3>
+  <mat-tab-group animationDuration="1000ms">
+    <mat-tab label="Особисті дані"
+      ><div class="example-action-buttons">
+        <button mat-button (click)="accordion.openAll()">Розгорнути</button>
+        <button mat-button (click)="accordion.closeAll()">Згорнути</button>
+      </div>
+      <mat-accordion class="example-headers-align" multi>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Ім'я та прізвище </mat-panel-title>
+            <mat-panel-description>
+              Інформація про ініціали
+              <mat-icon>account_circle</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <mat-form-field>
+            <mat-label>Ім'я</mat-label>
+            <input matInput />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Прізвище</mat-label>
+            <input matInput />
+          </mat-form-field>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Пошта </mat-panel-title>
+            <mat-panel-description>
+              Інформація про електронну пошту
+              <mat-icon>mail</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-form-field>
+            <mat-label>Пошта</mat-label>
+            <input matInput />
+          </mat-form-field>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Дата народження </mat-panel-title>
+            <mat-panel-description>
+              Інформація про дату народження
+              <mat-icon>date_range</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <mat-form-field>
+            <mat-label>Date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              (focus)="picker.open()"
+              readonly
+            />
+          </mat-form-field>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-expansion-panel> </mat-accordion
+    ></mat-tab>
+    <mat-tab label="Історія кредитування"
+      ><table mat-table [dataSource]="transactions" class="mat-elevation-z8">
+        <!-- Item Column -->
+        <ng-container matColumnDef="item">
+          <th mat-header-cell *matHeaderCellDef>Дата взяття кредиту</th>
+          <td mat-cell *matCellDef="let transaction">{{ transaction.item }}</td>
+          <td mat-footer-cell *matFooterCellDef>Загальна сума</td>
+        </ng-container>
+
+        <!-- Cost Column -->
+        <ng-container matColumnDef="cost">
+          <th mat-header-cell *matHeaderCellDef>Сума кредиту</th>
+          <td mat-cell *matCellDef="let transaction">
+            {{ transaction.cost | currency }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef>
+            {{ getTotalCost() | currency }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr></table
+    ></mat-tab>
+    <mat-tab label="Розклад платежів">Content 3</mat-tab>
+  </mat-tab-group>
+</div>

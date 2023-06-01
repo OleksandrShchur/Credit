@@ -8,6 +8,7 @@ import { User, UserColumns } from 'src/models/user';
 import { CreditService } from 'src/services/credit.service';
 import { PopulateCreditDialogComponent } from '../populate-credit-dialog/populate-credit-dialog.component';
 import { PaymentCreditData } from 'src/models/PaymentCreditData';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-credit-inputs',
@@ -23,7 +24,11 @@ export class CreditInputsComponent {
   creditLimit: number = 18500; //(Math.floor(Math.random() * 100) * 1000) % 100000;
   interestRate: number = 36;
 
-  constructor(public dialog: MatDialog, private creditService: CreditService) {}
+  constructor(
+    public dialog: MatDialog,
+    private creditService: CreditService,
+    private router: Router
+  ) {}
 
   ngOnInit() {}
 
@@ -31,6 +36,10 @@ export class CreditInputsComponent {
     const index = this.dataSource.data.findIndex((u) => u.id === row.id);
 
     this.dataSource.data[index].isEdit = false;
+  }
+
+  logout() {
+    this.router.navigate(['/']);
   }
 
   addRow() {
@@ -128,6 +137,11 @@ export class CreditInputsComponent {
     this.creditService.calculateModel(processData).subscribe(
       (response) => {
         console.log(response);
+        debugger;
+        const arr: Number[] = response as Number[];
+        this.dataSource.data.forEach((el) => {
+          el.allowedPayment = el.sumOfCredit * Number(arr[el.id]);
+        });
         alert('Processing model successful.');
       },
       (error) => {

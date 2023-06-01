@@ -5,6 +5,7 @@ import { CreditInputsComponent } from './credit-inputs/credit-inputs.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './customer-account/login.component';
 import { RegisterComponent } from './customer-account/register.component';
+import { UserCabinetComponent } from './user-cabinet/user-cabinet.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'table',
     component: CreditInputsComponent,
+  },
+  {
+    path: 'cabinet',
+    component: UserCabinetComponent,
   },
   {
     path: '**',
