@@ -1,5 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from .models import CreditRequest
+from .models import Borrowing
+from .models import JsonReimbursementScheme
+
 
 User = get_user_model()
 
@@ -24,3 +28,22 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+
+class CreditRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CreditRequest
+        fields = '__all__'
+
+
+class BorrowingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Borrowing
+        fields = '__all__'
+
+
+class JsonReimbursementSchemeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JsonReimbursementScheme
+        fields = '__all__'
+

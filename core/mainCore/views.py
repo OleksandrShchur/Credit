@@ -8,7 +8,11 @@ from .serializers import UserSerializer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from mainCore.models import CreditRequest
+from mainCore.models import CreditRequest, JsonReimbursementScheme
+
+from rest_framework import status
+from .serializers import CreditRequestSerializer, BorrowingSerializer
+from .serializers import JsonReimbursementSchemeSerializer
 
 
 User = get_user_model()
@@ -61,3 +65,95 @@ def get_credit_requests_by_user(request):
             'credit_amount': request.credit_amount
         })
     return Response(response_data)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def credit_request_detail(request, pk):
+    try:
+        credit_request = CreditRequest.objects.get(pk=pk)
+    except CreditRequest.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CreditRequestSerializer(credit_request)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = CreditRequestSerializer(credit_request, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        credit_request.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def credit_request_create(request):
+    borrowing_data = request.data.get('borrowing')
+    borrowing_serializer = BorrowingSerializer(data=borrowing_data)
+    if borrowing_serializer.is_valid():
+        borrowing = borrowing_serializer.save()
+        credit_request_data = request.data.copy()
+        del credit_request_data['borrowing']
+        credit_request_data['borrowing_id'] = borrowing.id
+        credit_request_data['borrower_id'] = request.user.id
+        credit_request_serializer = CreditRequestSerializer(data=credit_request_data)
+        if credit_request_serializer.is_valid():
+            credit_request_serializer.save()
+            return Response(credit_request_serializer.data, status=status.HTTP_201_CREATED)
+    return Response({'message': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def user_detail(request):
+    user = User.objects.get(id=request.user.id)
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
+
+
+@api_view(['GET', 'POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def json_reimbursement_scheme_list(request):
+    if request.method == 'GET':
+        schemes = JsonReimbursementScheme.objects.all()
+        serializer = JsonReimbursementSchemeSerializer(schemes, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = JsonReimbursementSchemeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def json_reimbursement_scheme_detail(request, pk):
+    try:
+        scheme = JsonReimbursementScheme.objects.get(pk=pk)
+    except JsonReimbursementScheme.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = JsonReimbursementSchemeSerializer(scheme)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = JsonReimbursementSchemeSerializer(scheme, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        scheme.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
