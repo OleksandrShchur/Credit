@@ -1,42 +1,41 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Route, Router } from '@angular/router';
 
-@Component({ templateUrl: 'register.component.html' })
+@Component({
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
+})
 export class RegisterComponent implements OnInit {
-  form!: FormGroup;
-  loading = false;
-  submitted = false;
+  registerForm: FormGroup | any;
+  title = 'register';
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
-
-  ngOnInit() {
-    this.form = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      username: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+  constructor(private router: Router) {
+    this.registerForm = new FormGroup({
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email,
+        Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,63}$'),
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.pattern(
+          '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$'
+        ),
+      ]),
     });
   }
 
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.form.controls;
-  }
+  ngOnInit(): void {}
 
   onSubmit() {
-    this.submitted = true;
-
-    // stop here if form is invalid
-    if (this.form.invalid) {
+    if (!this.registerForm.valid) {
       return;
     }
-
-    this.loading = true;
-    this.loading = false;
+    localStorage.setItem('user', this.registerForm.value);
+    this.router.navigate(['/home']);
   }
 }

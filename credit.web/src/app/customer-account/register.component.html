@@ -1,37 +1,96 @@
-<div class="card">
-  <h4 class="card-header">Register</h4>
-  <div class="card-body">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div class="mb-3">
-        <label class="form-label">First Name</label>
-        <input type="text" formControlName="firstName" class="form-control" />
+<div class="text-center">
+  <h4 class="text-center">Register</h4>
+  <form
+    [formGroup]="registerForm"
+    (ngSubmit)="onSubmit()"
+    novalidate
+    class="d-flex-center"
+  >
+    <div class="example-container">
+      <div class="mt-top-2">
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            placeholder="Last Name"
+            formControlName="lastName"
+          />
+          <mat-error *ngIf="registerForm.get('lastName')?.errors?.required">
+            Last Name is required
+          </mat-error>
+        </mat-form-field>
       </div>
-      <div class="mb-3">
-        <label class="form-label">Last Name</label>
-        <input type="text" formControlName="lastName" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Username</label>
-        <input type="text" formControlName="username" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Password</label>
-        <input
-          type="password"
-          formControlName="password"
-          class="form-control"
-        />
+      <div class="mt-top-2">
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            placeholder="First Name"
+            formControlName="firstName"
+          />
+          <mat-error *ngIf="registerForm.get('firstName')?.errors?.required">
+            First Name is required
+          </mat-error>
+        </mat-form-field>
       </div>
       <div>
-        <button [disabled]="loading" class="btn btn-primary">
-          <span
-            *ngIf="loading"
-            class="spinner-border spinner-border-sm me-1"
-          ></span>
-          Register
-        </button>
-        <a routerLink="../login" class="btn btn-link">Cancel</a>
+        <mat-form-field>
+          <input matInput placeholder="Email" formControlName="email" />
+          <mat-error
+            *ngIf="
+              !registerForm.get('email')?.errors?.required &&
+              registerForm.get('email')?.errors?.pattern
+            "
+          >
+            Please enter a valid email address
+          </mat-error>
+          <mat-error
+            *ngIf="
+              registerForm.get('email')?.invalid &&
+              (registerForm.get('email')?.dirty ||
+                registerForm.get('email')?.touched) &&
+              registerForm.get('email')?.errors?.required
+            "
+          >
+            Email is required
+          </mat-error>
+        </mat-form-field>
       </div>
-    </form>
-  </div>
+      <div class="mt-top-2">
+        <mat-form-field>
+          <input
+            matInput
+            type="password"
+            placeholder="Password"
+            formControlName="password"
+          />
+          <mat-error *ngIf="!registerForm.get('password')?.errors?.required">
+            Password length must be greater than or equal to 8 and password must
+            contain one or more uppercase , lowercase , numeric and special
+            characters
+          </mat-error>
+          <mat-error
+            *ngIf="
+              registerForm.get('password')?.invalid &&
+              (registerForm.get('password')?.dirty ||
+                registerForm.get('password')?.touched) &&
+              registerForm.get('password')?.errors?.required
+            "
+          >
+            Password is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="mt-top">
+        <button
+          [disabled]="!registerForm.valid"
+          mat-raised-button
+          color="primary"
+          mat-button
+        >
+          Sign In
+        </button>
+      </div>
+    </div>
+  </form>
 </div>
