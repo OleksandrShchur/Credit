@@ -36,6 +36,10 @@ export class RegisterComponent implements OnInit {
       return;
     }
     localStorage.setItem('user', this.registerForm.value);
-    this.router.navigate(['/home']);
+    this.router.navigate(['/cabinet']);
+  }
+
+  login() {
+    this.router.navigate(['/']);
   }
 }
