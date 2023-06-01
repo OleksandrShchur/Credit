@@ -137,6 +137,11 @@ export class CreditInputsComponent {
     this.creditService.calculateModel(processData).subscribe(
       (response) => {
         console.log(response);
+        debugger;
+        const arr: Number[] = response as Number[];
+        this.dataSource.data.forEach((el) => {
+          el.allowedPayment = el.sumOfCredit * Number(arr[el.id]);
+        });
         alert('Processing model successful.');
       },
       (error) => {
